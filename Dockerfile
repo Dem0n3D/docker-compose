@@ -1,8 +1,21 @@
-FROM docker:latest
+FROM ubuntu:18.04
 
-ENV DOCKER_COMPOSE_VERSION=1.25.4
+ENV DOCKER_COMPOSE_VERSION=1.24.*
 
-RUN apk add python3 && \
-    apk add --no-cache --virtual .build-deps py3-pip python3-dev build-base libffi-dev openssl-dev && \
+RUN apt-get update && \
+    apt-get install -y apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common \
+    python3-pip && \
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
+    add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable" && \
+   apt-get update -y && \
+   apt-get install docker-ce -y && \
     pip3 install --no-cache-dir docker-compose==$DOCKER_COMPOSE_VERSION && \
-    apk del .build-deps
+    rm /var/cache/apt/archives/* -r
+
