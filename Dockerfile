@@ -1,4 +1,4 @@
-FROM docker:latest
+FROM docker:20.10.0-dind
 
 ENV DOCKER_COMPOSE_VERSION=1.27.4
 
